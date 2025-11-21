@@ -14,6 +14,18 @@ struct Sha256Circuit<F: Field> {
     digest: Vec<u8>,
 }
 
+// chip configuration structure - this chip is for bitwise operators mod 32
+#[derive(Clone, Debug)]
+struct Sha256Config {
+    advice: [Column<Advice>; 8], // one advice column per internal variable h0, h1, ..., h7
+    instance: Column<Instance>,
+    s_add_mod32: Selector,
+    s_rotate: Selector,
+    s_xor: Selector,
+    s_and: Selector,
+    s_shift: Selector,
+}
+
 
 fn main() {
     println!("Hello, world!");
