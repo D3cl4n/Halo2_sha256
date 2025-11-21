@@ -7,6 +7,14 @@ use halo2_proofs::{
 };
 
 
+// stucture for the circuit
+struct Sha256Circuit<F: Field> {
+    constant: F,
+    preimage: Vec<u8>,
+    digest: Vec<u8>,
+}
+
+
 fn main() {
     println!("Hello, world!");
 }
