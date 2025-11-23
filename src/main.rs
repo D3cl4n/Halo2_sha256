@@ -26,7 +26,14 @@ struct Sha256Config {
     s_shift: Selector,
 }
 
+// chip structure, holding a configuration and phantom data
+struct Sha256Chip<F: Field> {
+    config: Sha256Config,
+    _marker: PhantomData<F>,
+}
 
+
+// main function - tests the circuit and runs benchmarks
 fn main() {
     println!("Hello, world!");
 }
