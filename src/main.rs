@@ -32,6 +32,25 @@ struct Sha256Chip<F: Field> {
     _marker: PhantomData<F>,
 }
 
+// structure for numbers - cell values
+struct Number<F: Field>(AssignedCell<F, F>);
+
+// implement the Chip trait from halo2_proofs
+impl<F: Field> Chip<F> for Sha256Chip<F> {
+    type Config = Sha256Config;
+    type Loaded = ();
+
+    // getter for the config
+    fn config(&self) -> &Self::Config {
+        &self.config
+    }
+
+    // getter for the loaded instance variable
+    fn loaded(&self) -> &Self::Loaded {
+        &()
+    }
+}
+
 
 // main function - tests the circuit and runs benchmarks
 fn main() {
