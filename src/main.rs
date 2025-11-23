@@ -53,7 +53,7 @@ impl<F: Field> Chip<F> for Sha256Chip<F> {
 }
 
 // trait for the Sha256Chip bitwise operations
-trait Sha256Operations<F: Field>: Chip<F> {
+trait Sha256BitwiseOperations<F: Field>: Chip<F> {
     type Num;
 
     // load a private (witness) value into the circuit
@@ -65,21 +65,19 @@ trait Sha256Operations<F: Field>: Chip<F> {
     // expose a cell value as public
     fn expose_as_public(&self, layouter: impl Layouter<F>, num: Self::Num, row: usize) -> Result<(), Error>;
 
-    // adds two numbers together modulo 32, returns the numeric result
-    fn add_mod32(&self, layouter: impl Layouter<F>, a: Self::Num, b: Self::Num) -> Result<Self::Num, Error>;
+    // sha256 sub-algorithm Ch
+    fn Ch(&self, layouter: impl Layouter<F>, e: Value<F>, f: Value<F>, g: Value<F>) -> Result<Self::Num, Error>;
 
-    // bitwise rotate on a given number by n positions. Rotate left if flag is true, right if false
-    fn bitwise_rotate(&self, layouter: impl Layouter<F>, a: Self::Num, n: usize, direction: bool) -> Result<Self::Num, Error>;
+    // sha256 sub-algorithm Maj
+    fn Maj(&self, layouter: impl Layouter<F>, a: Value<F>, b: Value<F>, c: Value<F>) -> Result<Self::Num, Error>;
 
-    // bitwise XOR on two given numbers
-    fn bitwise_xor(&self, layouter: impl Layouter<F>, a: Self::Num, b: Self::Num) -> Result<Self::Num, Error>;
+    // sha256 sub-algorithm Sigma0
+    fn Sigma0(&self, layouter: impl Layouter<F>, a: Value<F>) -> Result<Self::Num, Error>;
 
-    // bitwise AND on two given numbers
-    fn bitwise_and(&self, layouter: impl Layouter<F>, a: Self::Num, b: Self::Num) -> Result<Self::Num, Error>;
-
-    // bitwise shift on a given number by n positions. Shift left if flag is true, right if false
-    fn bitwise_shift(&self, layouter: impl Layouter<F>, a: Self::Num, n: usize, direction: bool) -> Result<Self::Num, Error>;
+    // sha256 sub-algorithm Sigma1
+    fn Sigma1(&self, layouter: impl Layouter<F>, e: Value<F>) -> Result<Self::Num, Error>;
 }
+
 
 // implementing gates and supporting methods for the Sha256Chip
 impl<F: Field> Sha256Chip<F> {
