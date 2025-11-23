@@ -51,6 +51,35 @@ impl<F: Field> Chip<F> for Sha256Chip<F> {
     }
 }
 
+// trait for the Sha256Chip
+trait Sha256Operations<F: Field>: Chip<F> {
+    type Num;
+
+    // load a private (witness) value into the circuit
+    fn load_private(&self, layouter: impl Layouter<F>, a: Value<F>) -> Result<Self::Num, Error>;
+
+    // load a constant (witness) value into the circuit
+    fn load_constant(&self, layouter: impl Layouter<F>, constant: F) -> Result<Self::Num, Error>;
+
+    // expose a cell value as public
+    fn expose_as_public(&self, layouter: impl Layouter<F>, num: Self::Num, row: usize) -> Result<(), Error>;
+
+    // adds two numbers together modulo 32, returns the numeric result
+    fn add_mod32(&self, layouter: impl Layouter<F>, a: Self::Num, b: Self::Num) -> Result<Self::Num, Error>;
+
+    // bitwise rotate on a given number by n positions. Rotate left if flag is true, right if false
+    fn bitwise_rotate(&self, layouter: impl Layouter<F>, a: Self::Num, n: usize, direction: bool) -> Result<Self::Num, Error>;
+
+    // bitwise XOR on two given numbers
+    fn bitwise_xor(&self, layouter: impl Layouter<F>, a: Self::Num, b: Self::Num) -> Result<Self::Num, Error>;
+
+    // bitwise AND on two given numbers
+    fn bitwise_and(&self, layouter: impl Layouter<F>, a: Self::Num, b: Self::Num) -> Result<Self::Num, Error>;
+
+    // bitwise shift on a given number by n positions. Shift left if flag is true, right if false
+    fn bitwise_shift(&self, layouter: impl Layouter<F>, a: Self::Num, n: usize, direction: bool) -> Result<Self::Num, Error>;
+}
+
 
 // main function - tests the circuit and runs benchmarks
 fn main() {
